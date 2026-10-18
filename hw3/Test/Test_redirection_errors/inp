@@ -1,0 +1,7 @@
+cat < absent
+pwd > missing/dir
+pwd
+cd /etc < absent
+pwd
+exit > missing/dir
+echo alive

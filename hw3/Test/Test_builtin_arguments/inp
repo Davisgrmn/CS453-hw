@@ -1,0 +1,6 @@
+cd
+pwd extra
+history extra
+exit extra
+cd -
+echo survived

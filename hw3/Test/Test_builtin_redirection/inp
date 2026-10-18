@@ -1,0 +1,9 @@
+pwd > first
+pwd < first > second
+cat first ; cat second
+pwd
+cd /etc > empty
+pwd
+cd - ; pwd
+exit > done
+echo unreachable

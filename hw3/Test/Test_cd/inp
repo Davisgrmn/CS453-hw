@@ -1,0 +1,5 @@
+mkdir one ; cd one ; pwd
+mkdir two ; cd two ; pwd
+cd - ; pwd
+cd - ; pwd
+cd ../.. ; pwd

@@ -1,0 +1,2 @@
+1 echo alpha > /dev/null
+2 history > listing

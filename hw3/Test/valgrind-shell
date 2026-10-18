@@ -1,0 +1,8 @@
+#!/bin/bash
+set -eu
+root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)
+exec valgrind --quiet --num-callers=30 \
+    --leak-check=full --show-leak-kinds=all \
+    --errors-for-leak-kinds=definite,indirect,possible --error-exitcode=99 \
+    --child-silent-after-fork=yes --suppressions="$root/rl.supp" \
+    "$root/shell" "$@"

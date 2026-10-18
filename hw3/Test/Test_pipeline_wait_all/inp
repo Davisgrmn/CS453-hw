@@ -1,0 +1,2 @@
+touch ready
+sh @ROOT@/Test/helpers/after-marker ready > result | cat ; cat result

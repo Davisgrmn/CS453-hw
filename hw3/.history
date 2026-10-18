@@ -1,0 +1,7 @@
+exit
+pwd
+cd -
+echo hello | tr a-z A-Z
+history
+sleep 3 & echo ready
+ls

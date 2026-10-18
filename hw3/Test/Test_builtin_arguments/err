@@ -1,0 +1,5 @@
+cd: expected 1 argument
+pwd: expected 0 arguments
+history: expected 0 arguments
+exit: expected 0 arguments
+cd: no previous working directory

@@ -1,0 +1,3 @@
+sh @ROOT@/Test/helpers/after-marker ready > result &
+echo foreground
+touch ready

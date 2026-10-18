@@ -1,0 +1,6 @@
+alpha
+1 echo alpha
+2 history
+1 echo alpha
+2 history
+3 history | cat

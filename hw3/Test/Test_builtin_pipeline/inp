@@ -1,0 +1,4 @@
+cd /etc | pwd
+pwd | cat ; cd /etc | pwd
+exit | cat ; echo alive
+pwd

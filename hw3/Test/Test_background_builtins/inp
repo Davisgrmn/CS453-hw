@@ -1,0 +1,4 @@
+cd /etc & pwd
+exit & echo alive
+pwd > background-dir &
+exit

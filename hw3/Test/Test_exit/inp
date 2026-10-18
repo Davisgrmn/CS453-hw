@@ -1,0 +1,2 @@
+echo before ; exit ; echo wrong
+echo wrong

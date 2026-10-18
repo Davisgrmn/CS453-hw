@@ -1,0 +1,4 @@
+cat & echo foreground
+echo input > source
+cat < source > result &
+exit

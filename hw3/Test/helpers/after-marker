@@ -1,0 +1,7 @@
+#!/bin/sh
+# A shell that waits for this background command before running touch deadlocks.
+while [ ! -f "$1" ]; do
+    sleep 0.01
+done
+sleep 0.1
+printf 'finished\n'

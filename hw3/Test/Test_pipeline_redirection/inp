@@ -1,0 +1,5 @@
+echo direct > input | cat
+cat < input | tr a-z A-Z > output
+cat output
+pwd | cat > where
+cat where

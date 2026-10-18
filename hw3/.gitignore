@@ -1,0 +1,5 @@
+*.o
+*.d
+shell
+try
+__pycache__/

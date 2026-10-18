@@ -1,0 +1,6 @@
+echo ignored |
+echo <
+| echo bad
+echo bad >
+echo bad > output extra
+echo recovered

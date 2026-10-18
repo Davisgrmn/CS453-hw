@@ -1,0 +1,7 @@
+echo first > input
+cat < input > copy
+cat copy
+echo overwritten > input
+cat < input
+echo x > input
+cat input

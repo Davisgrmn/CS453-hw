@@ -1,0 +1,68 @@
+#!/bin/bash
+set -u
+export LC_ALL=C
+
+root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)
+program=$(realpath -- "${1:-$root/shell}")
+if [[ ! -x $program ]]; then
+    echo "Not executable: $program" >&2
+    exit 1
+fi
+scratch=$(mktemp -d "${TMPDIR:-/tmp}/hw3-tests.XXXXXX")
+trap 'rm -rf -- "$scratch"' EXIT
+
+# Paths vary between machines. Expand placeholders in inputs and expectations.
+expand() {
+    local work=$1 source=$2 destination=$3
+    local escaped_root=${root//\\/\\\\} escaped_work=${work//\\/\\\\}
+    escaped_root=${escaped_root//&/\\&}
+    escaped_root=${escaped_root//|/\\|}
+    escaped_work=${escaped_work//&/\\&}
+    escaped_work=${escaped_work//|/\\|}
+    sed -e "s|@ROOT@|$escaped_root|g" -e "s|@WORK@|$escaped_work|g" \
+        "$source" > "$destination"
+}
+
+passed=0
+failed=0
+for test in "$root"/Test/Test_*; do
+    [[ -d $test ]] || continue
+    name=${test##*/}
+    work=$scratch/$name
+    mkdir -- "$work"
+    expand "$work" "$test/inp" "$scratch/input"
+    expand "$work" "$test/exp" "$scratch/expected"
+    : > "$scratch/expected-errors"
+    if [[ -f $test/err ]]; then
+        expand "$work" "$test/err" "$scratch/expected-errors"
+    fi
+    status=0
+    (cd -- "$work" && timeout --kill-after=2s "${TEST_TIMEOUT:-15}s" \
+        "$program" < "$scratch/input" > "$scratch/output" 2> "$scratch/errors") || status=$?
+    ok=1
+    if [[ $status != 0 ]]; then
+        echo "$name: shell exited with status $status" >&2
+        ok=0
+    fi
+    diff -u -w "$scratch/expected" "$scratch/output" || ok=0
+    diff -u -w "$scratch/expected-errors" "$scratch/errors" || ok=0
+    if [[ -d $test/files ]]; then
+        while IFS= read -r -d '' expected; do
+            relative=${expected#"$test/files/"}
+            expand "$work" "$expected" "$scratch/expected-file"
+            diff -u -w "$scratch/expected-file" "$work/$relative" || ok=0
+        done < <(find "$test/files" -type f -print0)
+    fi
+    if [[ -f $test/check ]]; then
+        (cd -- "$work" && bash "$test/check") || ok=0
+    fi
+    if [[ $ok == 1 ]]; then
+        echo "PASS $name"
+        passed=$((passed + 1))
+    else
+        echo "FAIL $name" >&2
+        failed=$((failed + 1))
+    fi
+done
+printf '%d passed, %d failed\n' "$passed" "$failed"
+[[ $failed == 0 ]]

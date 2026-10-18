@@ -1,0 +1,5 @@
+syntax error at position 14: expected a command
+syntax error at position 6: expected a redirection filename
+syntax error at position 1: expected a command
+syntax error at position 10: expected a redirection filename
+syntax error at position 23: expected ';', '&', or end of line
