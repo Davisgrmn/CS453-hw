@@ -1,0 +1,6 @@
+#!/bin/sh
+# The course FLTK suppressions apply only to reachable library allocations.
+cd "$(dirname "$0")" || exit 1
+exec valgrind --leak-check=full --show-leak-kinds=all \
+  --errors-for-leak-kinds=definite,indirect,possible --error-exitcode=1 \
+  --suppressions=fltk.supp ./wam "$@"
